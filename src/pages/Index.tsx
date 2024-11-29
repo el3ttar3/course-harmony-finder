@@ -1,142 +1,124 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, BookOpen, Plus, Check } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Zap } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  level: string;
+interface Stats {
+  activeStudents: number;
+  coursesCompleted: number;
+  expertAdvisors: number;
+  partnerSchools: number;
 }
 
-const courses: Course[] = [
-  {
-    id: "1",
-    title: "Introduction to Web Development",
-    description: "Learn the basics of HTML, CSS, and JavaScript",
-    duration: "8 weeks",
-    level: "Beginner"
-  },
-  {
-    id: "2",
-    title: "Advanced React Patterns",
-    description: "Master advanced React concepts and patterns",
-    duration: "6 weeks",
-    level: "Advanced"
-  },
-  {
-    id: "3",
-    title: "Data Structures & Algorithms",
-    description: "Essential computer science concepts",
-    duration: "12 weeks",
-    level: "Intermediate"
-  },
-  {
-    id: "4",
-    title: "UI/UX Design Fundamentals",
-    description: "Learn design principles and tools",
-    duration: "10 weeks",
-    level: "Beginner"
-  },
-  {
-    id: "5",
-    title: "Machine Learning Basics",
-    description: "Introduction to ML concepts and Python",
-    duration: "8 weeks",
-    level: "Intermediate"
-  }
-];
+const stats: Stats = {
+  activeStudents: 10300,
+  coursesCompleted: 7896,
+  expertAdvisors: 400,
+  partnerSchools: 200
+};
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const { toast } = useToast();
 
-  const filteredCourses = courses.filter(course =>
-    course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    course.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleAddCourse = (courseId: string) => {
-    if (!selectedCourses.includes(courseId)) {
-      setSelectedCourses([...selectedCourses, courseId]);
-      toast({
-        title: "Course added",
-        description: "The course has been added to your selection.",
-      });
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">Course Explorer</h1>
-          <p className="text-muted-foreground">
-            Search and select courses to add to your learning path
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Zap className="h-6 w-6" />
+            <span className="text-xl font-bold">Top-Up</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link to="/signin">
+              <Button variant="ghost">Sign In</Button>
+            </Link>
+            <Link to="/signup">
+              <Button>Get Started</Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative h-[600px] bg-gradient-to-b from-muted/50 to-muted">
+        <div className="container flex h-full flex-col items-center justify-center text-center">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+            Discover Your Learning Path
+          </h1>
+          <p className="mt-4 max-w-[700px] text-muted-foreground md:text-xl">
+            Explore courses tailored to your goals and advance your career with expert-led content
+          </p>
+          <div className="relative mt-8 w-full max-w-2xl">
+            <Search className="absolute left-4 top-3 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder="What do you want to learn?"
+              className="h-12 w-full pl-12 pr-4"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-white">
+        <div className="container">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  {stats.activeStudents.toLocaleString()}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Active Students</p>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  {stats.coursesCompleted.toLocaleString()}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Courses Completed</p>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  {stats.expertAdvisors.toLocaleString()}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Expert Advisors</p>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  {stats.partnerSchools.toLocaleString()}
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">Partner Schools</p>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-16 bg-muted/50">
+        <div className="container text-center">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">About Top-Up</h2>
+          <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground">
+            Top-Up is your gateway to professional growth and personal development. We believe in making
+            quality education accessible to everyone, everywhere.
+          </p>
+          <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground">
+            Our platform connects learners with expert instructors and industry-leading content, helping you
+            master new skills at your own pace.
           </p>
         </div>
-
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-          <Input
-            placeholder="Search courses..."
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => (
-            <Card key={course.id} className="course-card">
-              <CardHeader>
-                <CardTitle className="flex items-start justify-between">
-                  <span className="text-xl">{course.title}</span>
-                  <BookOpen className="h-5 w-5 text-muted-foreground flex-shrink-0 ml-2" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">{course.description}</p>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Duration: {course.duration}</span>
-                  <span className="text-muted-foreground">Level: {course.level}</span>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  className="w-full"
-                  variant={selectedCourses.includes(course.id) ? "secondary" : "default"}
-                  onClick={() => handleAddCourse(course.id)}
-                  disabled={selectedCourses.includes(course.id)}
-                >
-                  {selectedCourses.includes(course.id) ? (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      Added to Path
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add to Path
-                    </>
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-
-        {filteredCourses.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No courses found matching your search.</p>
-          </div>
-        )}
-      </div>
+      </section>
     </div>
   );
 };
