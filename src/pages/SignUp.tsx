@@ -2,124 +2,73 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { FcGoogle } from "react-icons/fc";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 const SignUp = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast({
-        title: "Error",
-        description: "Passwords do not match",
-        variant: "destructive",
-      });
-      return;
-    }
-    toast({
-      title: "Account created",
-      description: "Welcome to Top-Up!",
-    });
-    navigate("/");
-  };
-
-  const handleGoogleSignUp = () => {
-    toast({
-      title: "Google Sign Up",
-      description: "Redirecting to Google authentication...",
-    });
-    // Google authentication logic would go here
+    toast.success("Account created successfully!");
+    navigate("/signin");
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" 
-      style={{ 
-        backgroundImage: "url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?blur=8')",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        backgroundBlend: "overlay"
-      }}
-    >
-      <Card className="w-full max-w-md mx-4 bg-white/90 backdrop-blur-md">
-        <CardHeader>
-          <h2 className="text-2xl font-bold text-center">Create your Top-Up Account</h2>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Sign Up
-            </Button>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <Button
-              variant="outline"
-              className="w-full mt-4 flex items-center justify-center gap-2"
-              onClick={handleGoogleSignUp}
-            >
-              <FcGoogle className="h-5 w-5" />
-              Sign up with Google
-            </Button>
+    <div className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundBlendMode: "overlay",
+        backgroundColor: "rgba(0, 0, 0, 0.7)"
+      }}>
+      <div className="w-full max-w-md space-y-8 bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-xl">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold">Create Account</h2>
+          <p className="mt-2 text-gray-600">Join our community today!</p>
+        </div>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <div className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Button
-              variant="link"
-              className="p-0 h-auto font-normal"
-              onClick={() => navigate("/signin")}
-            >
-              Sign in
-            </Button>
-          </p>
-        </CardFooter>
-      </Card>
+          <Button type="submit" className="w-full">
+            Sign Up
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
+            onClick={() => toast.info("Google Sign Up coming soon!")}
+          >
+            <FcGoogle className="w-5 h-5" />
+            Sign up with Google
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { FcGoogle } from "react-icons/fc";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -15,101 +13,58 @@ const SignIn = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === "admin" && password === "admin") {
-      toast({
-        title: "Success",
-        description: "Welcome back, Admin!",
-      });
+      toast.success("Welcome back, Admin!");
       navigate("/admin");
     } else {
-      toast({
-        title: "Error",
-        description: "Invalid credentials",
-        variant: "destructive",
-      });
+      toast.error("Invalid credentials");
     }
   };
 
-  const handleGoogleSignIn = () => {
-    toast({
-      title: "Google Sign In",
-      description: "Redirecting to Google authentication...",
-    });
-    // Google authentication logic would go here
-  };
-
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" 
-      style={{ 
-        backgroundImage: "url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?blur=8')",
-        backgroundColor: "rgba(0,0,0,0.5)",
-        backgroundBlend: "overlay"
-      }}
-    >
-      <Card className="w-full max-w-md mx-4 bg-white/90 backdrop-blur-md">
-        <CardHeader>
-          <h2 className="text-2xl font-bold text-center">Sign In to Top-Up</h2>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full"
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Sign In
-            </Button>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <Button
-              variant="outline"
-              className="w-full mt-4 flex items-center justify-center gap-2"
-              onClick={handleGoogleSignIn}
-            >
-              <FcGoogle className="h-5 w-5" />
-              Sign in with Google
-            </Button>
+    <div className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundBlendMode: "overlay",
+        backgroundColor: "rgba(0, 0, 0, 0.7)"
+      }}>
+      <div className="w-full max-w-md space-y-8 bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-xl">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold">Sign In</h2>
+          <p className="mt-2 text-gray-600">Welcome back!</p>
+        </div>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <div className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Button
-              variant="link"
-              className="p-0 h-auto font-normal"
-              onClick={() => navigate("/signup")}
-            >
-              Sign up
-            </Button>
-          </p>
-        </CardFooter>
-      </Card>
+          <Button type="submit" className="w-full">
+            Sign In
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
+            onClick={() => toast.info("Google Sign In coming soon!")}
+          >
+            <FcGoogle className="w-5 h-5" />
+            Sign in with Google
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };
