@@ -1,19 +1,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { CourseCard } from "@/components/CourseCard";
+import { StatsSection } from "@/components/StatsSection";
 
-interface Stats {
-  activeStudents: number;
-  coursesCompleted: number;
-  expertAdvisors: number;
-  partnerSchools: number;
-}
-
-const stats: Stats = {
+const stats = {
   activeStudents: 10300,
   coursesCompleted: 7896,
   expertAdvisors: 400,
@@ -26,6 +20,7 @@ interface Course {
   description: string;
   instructor: string;
   price: number;
+  image: string;
 }
 
 const mockCourses: Course[] = [
@@ -34,21 +29,24 @@ const mockCourses: Course[] = [
     title: "Web Development Fundamentals",
     description: "Learn the basics of web development with HTML, CSS, and JavaScript",
     instructor: "John Doe",
-    price: 49.99
+    price: 49.99,
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&auto=format&fit=crop&q=60"
   },
   {
     id: 2,
     title: "React Mastery",
     description: "Master React.js and build modern web applications",
     instructor: "Jane Smith",
-    price: 79.99
+    price: 79.99,
+    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&auto=format&fit=crop&q=60"
   },
   {
     id: 3,
     title: "Python Programming",
     description: "Complete Python programming course from basics to advanced",
     instructor: "Mike Johnson",
-    price: 59.99
+    price: 59.99,
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&auto=format&fit=crop&q=60"
   }
 ];
 
@@ -121,62 +119,14 @@ const Index = () => {
           <h2 className="text-3xl font-bold mb-8">Available Courses</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCourses.map((course) => (
-              <Card key={course.id} className="course-card">
-                <CardHeader>
-                  <CardTitle>{course.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{course.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">By {course.instructor}</span>
-                    <span className="font-bold">${course.price}</span>
-                  </div>
-                </CardContent>
-              </Card>
+              <CourseCard key={course.id} {...course} />
             ))}
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?blur=8')" }}>
-        <div className="container relative z-10">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <Card className="bg-white/80 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  {stats.activeStudents.toLocaleString()}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">Active Students</p>
-              </CardHeader>
-            </Card>
-            <Card className="bg-white/80 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  {stats.coursesCompleted.toLocaleString()}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">Courses Completed</p>
-              </CardHeader>
-            </Card>
-            <Card className="bg-white/80 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  {stats.expertAdvisors.toLocaleString()}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">Expert Advisors</p>
-              </CardHeader>
-            </Card>
-            <Card className="bg-white/80 backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  {stats.partnerSchools.toLocaleString()}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">Partner Schools</p>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      </section>
+      <StatsSection stats={stats} />
 
       {/* About Section */}
       <section className="py-16 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504893524553-b855bce32c67?blur=8')" }}>
